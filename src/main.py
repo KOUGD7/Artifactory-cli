@@ -1,5 +1,6 @@
 from utils.system import get_ping, get_storage, get_help, get_version
 from utils.repository import create_repo, get_repos
+from utils.user import create_user, del_user, get_users
 
 if __name__ == "__main__":
     print('Welcome to JFrog CLI. For more information on a specific command, type HELP command-name')
@@ -39,9 +40,25 @@ if __name__ == "__main__":
                     print(f'Invalid command. Use {cmd} <repository name>')
                     get_help()
 
-            
             case 'REPOLIST':
                 get_repos()
+
+            case 'USERLIST':
+                get_users()
+
+            case 'USERADD':
+                if len(lst) == 2:
+                    create_user(lst[1])
+                else:
+                    print(f'Invalid command. Use {cmd} <username>')
+                    get_help()   
+
+            case 'USERDEL':
+                if len(lst) == 2:
+                    del_user(lst[1])
+                else:
+                    print(f'Invalid command. Use {cmd} <username>')
+                    get_help()            
 
             case 'VERSION':
                 get_version()

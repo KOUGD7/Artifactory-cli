@@ -1,6 +1,6 @@
 from config import ARTIFACTORY_URL, headers, spacing, requests
 
-def get_help() -> None:
+def get_help():
     help_dict = {
         'EXIT': 'Quit the CLI',
         'HELP': 'Provides Help information for CLI',
@@ -9,6 +9,9 @@ def get_help() -> None:
         'REPODEL <repository name>': 'Delete Repository',
         'REPOUPATE': 'Update Repository',
         'REPOLIST': 'Display list of repositories',
+        'USERADD <user name>': 'Create Repository User',
+        'USERDEL <user name>': 'Delete Repository',
+        'USERLIST': 'Display list of users',
         'STORAGE': 'Display Storage Summary Information',
         'VERSION': 'Return information about the current Artifactory version',    
     }
