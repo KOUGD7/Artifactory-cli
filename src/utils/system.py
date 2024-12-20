@@ -6,6 +6,7 @@ def get_help() -> None:
         'HELP': 'Provides Help information for CLI',
         'PING': 'Get a simple status response about the state of Artifactory',
         'REPOADD <repository name>': 'Create Repository',
+        'REPODEL <repository name>': 'Delete Repository',
         'REPOUPATE': 'Update Repository',
         'REPOLIST': 'Display list of repositories',
         'STORAGE': 'Display Storage Summary Information',
@@ -15,6 +16,7 @@ def get_help() -> None:
     print("For more information on a specific command, type HELP command-name")
     for key in help_dict.keys():
         print(f"{key}".ljust(spacing)+f"{help_dict[key]}")
+
 
 def get_version():
     url = f"{ARTIFACTORY_URL}/api/system/version"
@@ -26,7 +28,8 @@ def get_version():
     else:
         print(f"Error: Failed to get version {response.status_code}")
 
-def get_ping() -> None:
+
+def get_ping():
     url = f"{ARTIFACTORY_URL}/api/v1/system/readiness"
 
     try:
@@ -40,7 +43,8 @@ def get_ping() -> None:
     else:
         print(f"Error: Failed to ping {response.status_code}")
 
-def get_storage() -> None:
+
+def get_storage():
 
     url = f"{ARTIFACTORY_URL}/api/storageinfo"
     response = requests.get(url, headers=headers)

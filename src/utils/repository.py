@@ -26,17 +26,27 @@ def create_repo(repoName, rclass="local", method = 'create'):
         'key': repoName,
         "rclass": rclass
     }
-
     repo_config = json.dumps(config)
 
     if method == 'update':
         del config['rclass']
 
         repo_descrip = input('Enter Description: ')
+        repo_descrip = html.escape(repo_descrip)
         config['description'] = repo_descrip
-        
         repo_config = json.dumps(config)
+
         response = requests.post(url, headers=headers, data=repo_config)
+
+    elif method == 'delete':
+        confirm = False
+        confirm = input('Confirm (y/n) that you want this repo removed?: ').lower() == 'y'
+        if confirm:
+            response = requests.delete(url, headers=headers)
+        else:
+            print('Operation aborted')
+            return
+
     else:
         response = requests.put(url, headers=headers, data=repo_config)
 

@@ -18,11 +18,14 @@ if __name__ == "__main__":
             case 'STORAGE':
                 get_storage()
 
-            case 'REPOADD' | 'REPOUPDATE':
-
+            case 'REPOADD' | 'REPODEL' | 'REPOUPDATE':
+                
+                repo_type =''
                 if cmd == 'REPOADD':
                     operation = 'create'
                     repo_type = input('Enter Repo Type: ')
+                elif cmd == 'REPODEL':
+                    operation = 'delete'
                 else:
                     operation = 'update'
 
