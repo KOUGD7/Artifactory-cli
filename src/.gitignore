@@ -1,0 +1,48 @@
+# Byte-compiled Python files
+*.pyc
+*.pyo
+
+# Virtual environment directories
+venv/
+env/
+virtualenv/
+
+# Package directories
+dist/
+build/
+eggs/
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+
+# IDE configuration files
+.idea/
+.vscode/
+.pydevproject
+
+# Python cache files
+__pycache__/
+
+# Cache directories
+.cache/
+.pytest_cache/
+.tox/
+
+# Environment variables
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Wheels
+*.wheel
+
+# Eggs
+*.egg
+
+# Pip cache
+pip-cache/
