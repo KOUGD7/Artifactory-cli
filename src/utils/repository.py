@@ -1,21 +1,27 @@
 from config import ARTIFACTORY_URL, headers, spacing, requests, json, html
 
 def get_repos():
-
     url = f"{ARTIFACTORY_URL}/api/repositories"
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for unsuccessful requests
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}")
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {e}")
+    except Exception as e:
+        print(f"Error: {response.status_code}")
 
     if response.status_code == 200:
         repos = response.json()
         print(f"List of Repositories ({len(repos)}):")
         count = 1
         for repo in repos:
-            #print(repo)
             if 'key' in repo and 'packageType' in repo:
                 print(f"{count}. {repo['key']}".ljust(spacing) + f"{repo['type']}".ljust(12) + f" Package type: {repo['packageType']}")
             count+=1
     else:
-        print(f"Error: Failed to retrieve repositories {response.status_code}")
+        print(f"Failed to retrieve repositories")
 
 
 def create_repo(repoName, rclass="local", method = 'create'):
@@ -36,7 +42,15 @@ def create_repo(repoName, rclass="local", method = 'create'):
         config['description'] = repo_descrip
         repo_config = json.dumps(config)
 
-        response = requests.post(url, headers=headers, data=repo_config)
+        try:
+            response = requests.post(url, headers=headers, data=repo_config)
+            response.raise_for_status()  # Raise an exception for unsuccessful requests
+        except requests.exceptions.ConnectionError as e:
+            print(f"Connection error: {e}")
+        except requests.exceptions.Timeout as e:
+            print(f"Timeout error: {e}")
+        except Exception as e:
+            print(f"Error: Failed to {method} repository {response.status_code}")
 
     elif method == 'delete':
         confirm = False
@@ -54,7 +68,6 @@ def create_repo(repoName, rclass="local", method = 'create'):
         print(response.text)
         
     else:
-        print(f"Error: Failed to {method} repositories {response.status_code}")
         res = response.json()
         if len(res['errors']) > 0:
             errors = res['errors']

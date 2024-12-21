@@ -1,4 +1,4 @@
-from config import ARTIFACTORY_URL, headers, spacing, requests
+from config import ARTIFACTORY_URL, headers, spacing, requests, json, html
 
 def get_help():
     help_dict = {
@@ -58,45 +58,63 @@ def login():
 
 def get_version():
     url = f"{ARTIFACTORY_URL}/api/system/version"
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for unsuccessful requests
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}")
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {e}")
+    except Exception as e:
+        print(f"Error: Failed to get version {response.status_code}")
+    
     if response.status_code == 200:
         systemVersion = response.json()
         print("version:".ljust(spacing)+f"{systemVersion['version']}")
-        print("revision:" .ljust(spacing)+f"{systemVersion['revision']}")
-    else:
-        print(f"Error: Failed to get version {response.status_code}")
+        print("revision:" .ljust(spacing)+f"{systemVersion['revision']}")     
 
 
 def get_ping():
     url = f"{ARTIFACTORY_URL}/api/v1/system/readiness"
-
     try:
         response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for unsuccessful requests
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}")
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {e}")
     except Exception as e:
-        raise(e)
+        print(f"Error: Failed to ping {response.status_code}")
 
     if response.status_code == 200:
         status = response.json()
         print("Status:".ljust(spacing)+f" {status['code']}")
-    else:
-        print(f"Error: Failed to ping {response.status_code}")
 
 
 def get_storage():
-
     url = f"{ARTIFACTORY_URL}/api/storageinfo"
-    response = requests.get(url, headers=headers)
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for unsuccessful requests
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}")
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {e}")
+    except Exception as e:
+        print(f"Error: Failed to get storage info {response.status_code}")
 
     if response.status_code == 200:
         info = response.json()
-        repos = info['repositoriesSummaryList']
-        count = 1
-        for repo in repos:
-            if 'packageType' in repo:
-                print(f"{count}. {repo['repoKey']}".ljust(spacing)+f"Used: {repo['usedSpace']}".ljust(18) + f" Type: {repo['packageType']}")
-            else:
-                print(f"{repo['repoKey']}".ljust(spacing)+f"Used: {repo['usedSpace']}")
+        if 'repositoriesSummaryList' in info:
+            repos = info['repositoriesSummaryList']
+            count = 1
+            for repo in repos:
+                if 'packageType' in repo:
+                    print(f"{count}. {repo['repoKey']}".ljust(spacing)+f"Used: {repo['usedSpace']}".ljust(18) + f" Type: {repo['packageType']}")
+                else:
+                    print(f"{repo['repoKey']}".ljust(spacing)+f"Used: {repo['usedSpace']}")
 
-            count+=1
-    else:
-        print(f"Error: Failed to get storage info {response.status_code}")
+                count+=1
+        else:
+            print(f"Storage Information was not found")
+
