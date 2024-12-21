@@ -1,9 +1,12 @@
-from utils.system import get_ping, get_storage, get_help, get_version
+from utils.system import get_ping, get_storage, get_help, get_version, login
 from utils.repository import create_repo, get_repos
 from utils.user import create_user, del_user, get_users
 
 if __name__ == "__main__":
-    print('Welcome to JFrog CLI. For more information on a specific command, type HELP command-name')
+    #Run log in until valid
+    loggedIn = False
+    while not loggedIn:
+        loggedIn = login()
 
     run = True
     while run:

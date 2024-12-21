@@ -21,6 +21,41 @@ def get_help():
         print(f"{key}".ljust(spacing)+f"{help_dict[key]}")
 
 
+def login():
+    url = f"{ARTIFACTORY_URL}/api/system/ping"
+
+    username = input('Enter Username: ')
+    password = input('Enter Password: ')
+
+    username = html.escape(username)
+    password = html.escape(password)
+
+    try:
+        response = requests.get(url, auth=(username, password))
+        response.raise_for_status()  # Raise an exception for unsuccessful requests
+    except requests.exceptions.ConnectionError as e:
+        print(f"Connection error: {e}")
+    except requests.exceptions.Timeout as e:
+        print(f"Timeout error: {e}")
+    except Exception as e:
+        message = response.status_code
+        print(f"Error: Failed to login. {message}")
+        
+
+    if response.status_code == 200:
+        print('\nWelcome to JFrog CLI. For more information on a specific command, type HELP command-name')
+        return True
+    else:
+        message = response.status_code
+        res = response .json()
+        if 'errors' in res:
+            if len(res['errors']) >0:
+                error = res['errors'][0]
+                if 'message' in error: message = error['message']
+        
+        return False
+
+
 def get_version():
     url = f"{ARTIFACTORY_URL}/api/system/version"
     response = requests.get(url, headers=headers)
