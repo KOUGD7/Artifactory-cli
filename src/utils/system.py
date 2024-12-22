@@ -1,5 +1,8 @@
 from config import ARTIFACTORY_URL, headers, spacing, requests, json, html
 
+"""
+Help menu displaying all the commands and usage
+"""
 def get_help():
     help_dict = {
         'EXIT': 'Quit the CLI',
@@ -21,6 +24,9 @@ def get_help():
         print(f"{key}".ljust(spacing)+f"{help_dict[key]}")
 
 
+"""
+Login to CLI.
+"""
 def login():
     url = f"{ARTIFACTORY_URL}/api/system/ping"
 
@@ -56,6 +62,9 @@ def login():
         return False
 
 
+"""
+Retrieves version.
+"""
 def get_version():
     url = f"{ARTIFACTORY_URL}/api/system/version"
     try:
@@ -74,6 +83,9 @@ def get_version():
         print("revision:" .ljust(spacing)+f"{systemVersion['revision']}")     
 
 
+"""
+Get the state of Artifactory
+"""
 def get_ping():
     url = f"{ARTIFACTORY_URL}/api/v1/system/readiness"
     try:
@@ -91,6 +103,9 @@ def get_ping():
         print("Status:".ljust(spacing)+f" {status['code']}")
 
 
+"""
+Retrieves storage information.
+"""
 def get_storage():
     url = f"{ARTIFACTORY_URL}/api/storageinfo"
     try:

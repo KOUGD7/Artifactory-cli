@@ -1,5 +1,8 @@
 from config import ARTIFACTORY_URL, headers, spacing, requests, json, html
 
+"""
+Retrieves the list of repository. Format and displays the repository information
+"""
 def get_repos():
     url = f"{ARTIFACTORY_URL}/api/repositories"
     try:
@@ -24,6 +27,14 @@ def get_repos():
         print(f"Failed to retrieve repositories")
 
 
+"""
+    Create a new repository.
+    
+    Parameters:
+    repoName (string): The name of the repository.
+    rclass (string): The class of the repository.
+    method (string): The operation (create, update or delete) to the perform on repo.
+    """
 def create_repo(repoName, rclass="local", method = 'create'):
     repoName = html.escape(repoName)
     

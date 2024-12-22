@@ -8,6 +8,9 @@ if __name__ == "__main__":
     while not loggedIn:
         loggedIn = login()
 
+    """
+    While run is true, prompt user to enter command which will be validated using the cases 
+    """    
     run = True
     while run:
         inputText = input("Enter: ")
@@ -27,7 +30,7 @@ if __name__ == "__main__":
                 repo_type =''
                 if cmd == 'REPOADD':
                     operation = 'create'
-                    repo_type = input('Enter Repo Type: ')
+                    repo_type = input('Enter Repo Type (Optional): ')
                 elif cmd == 'REPODEL':
                     operation = 'delete'
                 else:

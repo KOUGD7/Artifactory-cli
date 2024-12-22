@@ -1,5 +1,8 @@
 from config import ARTIFACTORY_URL, headers, spacing, requests, json, html
 
+"""
+Retrieves the list of users. Format and displays the user information
+"""
 def get_users():
     url = f"{ARTIFACTORY_URL}/api/security/users"
     try:
@@ -21,6 +24,12 @@ def get_users():
             count+=1     
 
 
+"""
+Create a new repository.
+    
+Parameters:
+userName (string): The name of the user.
+"""
 def create_user(userName):
     email = input('Enter Email: ')
     password = input('Enter Password: ')
@@ -59,6 +68,12 @@ def create_user(userName):
         print(f"User was created {response}")
 
 
+"""
+Delete a repository.
+    
+Parameters:
+userName (string): The name of the user.
+"""
 def del_user(userName):
     url = f"{ARTIFACTORY_URL}/api/security/users/{userName}"
 
